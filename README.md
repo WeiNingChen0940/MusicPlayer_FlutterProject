@@ -1,16 +1,5 @@
-# as_demo1
+# 一个material design风格的跨平台移动端音乐播放器，使用flutter构建
+## 为什么会想到做这样的软件？
+因为目前市面上缺少功能完善并且原汁原味的material design风格音乐播放器。
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 作者是flutter初学者，本项目主要是为了锻炼本人的flutter开发能力。
