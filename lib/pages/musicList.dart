@@ -1,33 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class homePage extends StatefulWidget
+class musicListPage extends StatefulWidget
 {
-  const homePage({super.key});
+  const musicListPage({super.key});
   @override
   State<StatefulWidget> createState() {
-    return _homePageState();
+    return _musicListPageState();
   }
 
 }
 
-class _homePageState extends State<homePage>
+class _musicListPageState extends State<musicListPage>
 {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('home'),
+        title: Text('musicList'),
       ),
       body: SafeArea(
           child: Center(
-            child:Column(
-              children: [
-                TextButton(onPressed: (){}, child: Icon(Icons.home)),
-                Text('h'*1800)
-              ],
-            )
+              child:Column(
+                children: [
+                  TextButton(onPressed: (){}, child: Icon(Icons.music_note_rounded)),
+                ],
+              )
           )
       ),
 

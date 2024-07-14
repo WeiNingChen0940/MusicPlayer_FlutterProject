@@ -1,20 +1,45 @@
+import 'package:as_demo1/musicBar.dart';
 import 'package:as_demo1/pages/home.dart';
+import 'package:as_demo1/pages/musicList.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:ui' as ui;
+
+class DataModel with ChangeNotifier {
+  static final List<Widget> _widgetOptions = <Widget>[
+    const homePage(),
+    const musicListPage(),
+    const homePage(),
+  ];
+
+  static List<Widget> get widgetOptions => _widgetOptions;
+  int selectedIndex = 0;
+
+  void onItemTapped(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+}
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider<DataModel>(
+    create: (context) => DataModel(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -32,43 +57,60 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    homePage(),
-    homePage(),
-    homePage(),
-  ];
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  void update() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+    return Consumer<DataModel>(
+      builder: (context, dataModel, _) {
+        return Scaffold(
+          body: DataModel._widgetOptions.elementAt(dataModel.selectedIndex),
+          bottomNavigationBar: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.music_note),
+                    Icon(Icons.music_note),
+                    Icon(Icons.music_note),
+                  ],
+                ),
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: BottomNavigationBar(
+                      elevation: 0,
+                      backgroundColor: Colors.white10,
+                      items: const <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.music_note_outlined),
+                          label: '主页',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.queue_music_outlined),
+                          label: '播放列表',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.graphic_eq_outlined),
+                          label: '歌单',
+                        ),
+                      ],
+                      currentIndex: dataModel.selectedIndex,
+                      selectedItemColor: Colors.green,
+                      onTap: (int index) {
+                        setState(() {
+                          dataModel.onItemTapped(index);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ]),
+        );
+      },
     );
   }
 }
