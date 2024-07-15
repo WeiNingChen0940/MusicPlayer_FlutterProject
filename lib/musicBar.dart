@@ -1,43 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:ui' as ui;
 class MusicPlayerBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    return BottomAppBar(
-      color: Colors.blueGrey[900],
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: Icon(Icons.skip_previous),
-            onPressed: () {},
-          ),
-          CircleAvatar(
-            radius: screenWidth * 0.08,
-            backgroundImage: NetworkImage('https://example.com/album-cover.jpg'),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(Icons.play_arrow),
-                onPressed: () {},
+    return Stack(
+      children: [
+        Positioned(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  height: 56,
+                  width: screenWidth,
+                  color: Colors.white10,
+                ),
               ),
-              IconButton(
-                icon: Icon(Icons.pause),
-                onPressed: () {},
-              ),
-            ],
+            )
           ),
-          IconButton(
-            icon: Icon(Icons.skip_next),
-            onPressed: () {},
-          ),
-        ],
-      ),
+
+        Positioned(
+          right: 0,
+            child: SizedBox(
+              height: 56 ,
+              width: 56,
+              child: IconButton(icon: Icon(Icons.play_arrow_outlined), color: Colors.black, onPressed: () {  },),
+            )
+        ),
+      ],
     );
   }
 }
