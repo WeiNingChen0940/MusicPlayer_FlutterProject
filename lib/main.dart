@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:as_demo1/pages/home_all.dart';
+import 'package:as_demo1/pages/sound_effects.dart';
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,10 +18,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:as_demo1/databaseControl.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 class DataModel with ChangeNotifier {
-  var pagesIndex = [0, 1, 1];
+  var pagesIndex = [0, 1, 2];
   static final List<Widget> _pages = <Widget>[
     const HomePage(),
     const MusicListPage(),
+    const SoundEffects(),
     const HomeAll(),
   ];
   int songsIndex = 0;
@@ -41,32 +43,39 @@ class DataModel with ChangeNotifier {
   late Future<SoundHandle> _handle;
   late SoundHandle handle;
   bool isPlaying = false;
+  List<double> filterParameters = [1,1,1,1,1,1,1,1,1];
+  List<String> filterParamNames = [];
   Future<void> ready2PlaySong() async {
     await soLoud.init();
 
     source = await soLoud.loadFile(songs.elementAt(songsIndex));
     //Fluttertoast.showToast(msg: 'ready: ${songs.elementAt(songsIndex)}');
     _handle = soLoud.play(source);
+    handle = await _handle;
     soLoud.setPause(handle, false);
 
     notifyListeners();
   }
-
+  void initEQ(){
+    filterParamNames = soLoud.getFilterParamNames(FilterType.eqFilter);
+    for(int i=0;i<9;i++){
+      print('${filterParamNames[i]}:${filterParameters[i]}');
+    }
+  }
   Future<void> play() async {
     Fluttertoast.showToast(msg: 'play');
     //Fluttertoast.showToast(msg: 'isP:$isPlaying');
     soLoud.setPause(handle, false);
-    handle = await _handle;
     isPlaying = true;
-    var fil = soLoud.getFilterParamNames(FilterType.eqFilter);
-
-    int i =0;
-    for(;i<fil.length;i++){
-      var filI = soLoud.getFilterParameter(FilterType.eqFilter, i);
-      print('fil:${fil[i]} -- $filI');
-    }
 
     notifyListeners();
+  }
+
+    Future<void> setFilterParameter() async {
+    int i =0;
+    for(;i<9;i++){
+      soLoud.setFilterParameter(FilterType.eqFilter, i, filterParameters[i]);
+    }
   }
 
   Future<void> pause() async {
@@ -232,10 +241,14 @@ class _MainPageState extends State<MainPage> {
                         currentIndex: dataModel.selectedIndex,
                         selectedItemColor: Colors.green,
                         onTap: (int index) {
-                          dataModel.onItemTapped(index);
                           if(index == 0){
-                            dataModel.changePagesIndex([0,1,1]);
+                            dataModel.changePagesIndex([0,1,2]);
                           }
+                          if(index == 2){
+                            dataModel.initEQ();
+                          }
+                          dataModel.onItemTapped(index);
+
                         },
                       ),
                     ),
