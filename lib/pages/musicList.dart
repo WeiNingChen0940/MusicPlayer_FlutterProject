@@ -26,9 +26,14 @@ class _MusicListPageState extends State<MusicListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('播放列表'),
+        backgroundColor: Colors.white.withOpacity(0),
+        title: const Text(
+          '播放列表',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
+        ),
       ),
       body: SafeArea(
           child: Center(
