@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       var dataModel =
                           Provider.of<DataModel>(context, listen: false);
-                      dataModel.changePagesIndex([3, 1, 2]);
+                      dataModel.changePagesIndex([2, 1, 0]);
                     },
                   ),
                   ListElementCategory(
