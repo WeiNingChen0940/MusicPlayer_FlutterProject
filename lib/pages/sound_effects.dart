@@ -33,9 +33,41 @@ class SoundEffectsState extends State<SoundEffects> {
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
-        body: const Center(
+        body: Center(
             child:
-            Column()
+            Column(
+              children: [
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 9,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(dataModel.filterParamNames[index],style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
+                          const Text('   0',style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.normal)),
+                          Slider(
+                              min: 0,
+                              max: index == 0 ? 1 : 4,
+                              label: dataModel.filterParameters[index].toString(),
+                              value: dataModel.filterParameters[index],
+                              onChanged: (value) {
+                                setState(() {
+                                  dataModel.filterParameters[index] = value;
+                                });
+                              }),
+                          Text('${index==0?1:4}   ',style: const TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.normal)),
+                          Text(dataModel.filterParameters[index].toStringAsPrecision(3),style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
+                        ],
+                      );
+                    }),
+                TextButton(
+                    onPressed: () {
+                      dataModel.setFilterParameter();
+                    },
+                    child: const Text('应用',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),))
+              ],
+            )
         ),
       ),
     );
