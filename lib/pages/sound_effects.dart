@@ -33,7 +33,7 @@ class SoundEffectsState extends State<SoundEffects> {
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
-        body: Center(
+        body: const Center(
             child:
             Column()
         ),
